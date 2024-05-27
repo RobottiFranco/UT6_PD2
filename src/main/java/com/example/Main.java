@@ -26,32 +26,32 @@ public class Main {
         int tamanoTabla = (int) Math.ceil((double) elementosEnHash / (factorDeCarga / 100.0));
         THash hashTable = new THash(tamanoTabla);
 
-        int ComparacionesInsertar = 0;
-        int comparacionesBuscarCorrectas = 0;
-        int BuscarIncorrectas = 0;
-        int cantBusquedasCorrectas = 0;
+        int totalComparacionesInsertar = 0;
+        int totalComparacionesBuscar = 0;
+        int busquedasExitosas = 0;
+        int busquedasSinExito = 0;
 
         for (String string : fileLeer) {
-            ComparacionesInsertar += hashTable.insertar(Integer.parseInt(string));
+            totalComparacionesInsertar += hashTable.insertar(Integer.parseInt(string));
         }
 
         for (String string : fileEscribir) {
-            int x = hashTable.buscar(Integer.parseInt(string));
-            if (x != -1) {
-                comparacionesBuscarCorrectas += x;
-                cantBusquedasCorrectas++;
+            int comparaciones = hashTable.buscar(Integer.parseInt(string));
+            if (comparaciones != -1) {
+                totalComparacionesBuscar += comparaciones;
+                busquedasExitosas++;
             } else {
-                BuscarIncorrectas++;
+                busquedasSinExito++;
             }
         }
 
-        int promedioComparacionesInsertar = ComparacionesInsertar / elementosEnHash;
-        int promedioComparacionesCorrectasBuscar = comparacionesBuscarCorrectas / cantBusquedasCorrectas;
+        int promedioComparacionesInsertar = totalComparacionesInsertar / elementosEnHash;
+        int promedioComparacionesBuscar = busquedasExitosas > 0 ? totalComparacionesBuscar / busquedasExitosas : 0;
+
         System.out.println("=====================");
         System.out.println("Probando con factor de carga: " + factorDeCarga + "%");
         System.out.println("Promedio de comparaciones para insertar: " + promedioComparacionesInsertar);
-        System.out.println("Promedio de comparaciones en búsquedas exitosas: " + promedioComparacionesCorrectasBuscar);
-        System.out
-                .println("búsquedas sin éxito: " + BuscarIncorrectas);
+        System.out.println("Promedio de comparaciones en búsquedas exitosas: " + promedioComparacionesBuscar);
+        System.out.println("Búsquedas sin éxito: " + busquedasSinExito);
     }
 }
